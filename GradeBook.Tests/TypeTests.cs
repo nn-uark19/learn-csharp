@@ -6,29 +6,35 @@ namespace GradeBook.Tests
 {    
     public class TypeTests
     {
+        /////////////////////////////////////////////
+        // 6th example
+        // pass value type to function
+        // when passed, a new copy was created
+        [Fact]
+        public void Test1()
+        {
+            var x = GetInt();
+            SetInt(x);
 
-        //[Fact]
-        //public void Test1()
-        //{
-        //    var x = GetInt();
-        //    SetInt(x);
+            Assert.Equal(3, x);
+        }
 
-        //    Assert.Equal(3, x);
-        //}
+        private void SetInt(int x)
+        {
+            x = 42;
+        }
 
-        //private void SetInt(int x)
-        //{
-        //    x = 42;
-        //}
-
-        //private int GetInt()
-        //{
-        //    return 3;
-        //}
+        private int GetInt()
+        {
+            return 3;
+        }
 
         /////////////////////////////////////////////
         // 5th example
-        // 
+        // CSharpCanPassByRef
+        // book1 stored memory location, passed to function
+        // when used 'ref' or 'out', the actual pointer of book1 got passed in, not just the copy
+        // when we make changes in function, the orignal pointer changes
         [Fact]
         public void CSharpCanPassByRef()
         {
@@ -45,6 +51,7 @@ namespace GradeBook.Tests
 
         /////////////////////////////////////////////
         // 4th example
+        // CSharpIsPassByValue => even if we pass object to function, all it really does is passing the memory location, not the actual object
         // book1 stored memory location, passed to object
         // in fucntion, book stored memory location
         // when we create book = new 
