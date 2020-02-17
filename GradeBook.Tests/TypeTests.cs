@@ -1,27 +1,51 @@
 using System;
-using System.IO;
 using Xunit;
-
+ 
 namespace GradeBook.Tests
 {    
-    public class TypeTests
-    {
-        /////////////////////////////////////////////
-        // 6th example
-        // pass value type to function
-        // when passed, a new copy was created
-        [Fact]
-        public void Test1()
-        {
-            var x = GetInt();
-            SetInt(x);
 
-            Assert.Equal(3, x);
+    public delegate string WriteLogDelegate(string logMessage);
+
+    public class TypeTests
+    {    
+        int count = 0;
+
+        [Fact]
+        public void WriteLogDelegateCanPointToMethod()
+        {
+            WriteLogDelegate log = ReturnMessage;
+            log += ReturnMessage;
+            log += IncrementCount;
+
+            var result = log("Hello!");
+            Assert.Equal(3, count);
         }
 
-        private void SetInt(int x)
+        string IncrementCount(string message) 
         {
-            x = 42;
+            count++;
+            return message.ToLower();
+        }
+
+        string ReturnMessage(string message) 
+        {
+            count++;
+            return message;
+        }
+
+
+        [Fact]
+        public void ValueTypesAlsoPassByValue()
+        {
+            var x = GetInt();
+            SetInt(ref x);
+
+            Assert.Equal(42, x);
+        }
+
+        private void SetInt(ref Int32 z)
+        {
+            z = 42;
         }
 
         private int GetInt()
@@ -29,77 +53,63 @@ namespace GradeBook.Tests
             return 3;
         }
 
-        /////////////////////////////////////////////
-        // 5th example
-        // CSharpCanPassByRef
-        // book1 stored memory location, passed to function
-        // when used 'ref' or 'out', the actual pointer of book1 got passed in, not just the copy
-        // when we make changes in function, the orignal pointer changes
         [Fact]
         public void CSharpCanPassByRef()
         {
             var book1 = GetBook("Book 1");
             GetBookSetName(out book1, "New Name");
 
-            Assert.Equal("New Name", book1.Name);
+            Assert.Equal("New Name", book1.Name);            
         }
 
-        private void GetBookSetName(out Book book, string name)
+        private void GetBookSetName(out InMemoryBook book, string name)
         {
-            book = new Book(name);
+            book = new InMemoryBook(name);
         }
 
-        /////////////////////////////////////////////
-        // 4th example
-        // CSharpIsPassByValue => even if we pass object to function, all it really does is passing the memory location, not the actual object
-        // book1 stored memory location, passed to object
-        // in fucntion, book stored memory location
-        // when we create book = new 
-        // book remove old value (old memory location)
-        // and contain memory locaiton of new object 
-        // (new object bc new Book(name))
-        // that's why book1 in orignal function does not change, 
-        // cause the object that it points to does not change
-        [Fact]
+         [Fact]
         public void CSharpIsPassByValue()
         {
             var book1 = GetBook("Book 1");
             GetBookSetName(book1, "New Name");
 
-            Assert.Equal("Book 1", book1.Name);
+            Assert.Equal("Book 1", book1.Name);            
         }
 
-        private void GetBookSetName(Book book, string name)
+        private void GetBookSetName(InMemoryBook book, string name)
         {
-            book = new Book(name);
+            book = new InMemoryBook(name);
         }
 
-        /////////////////////////////////////////////
-        // 3rd example
-        // this ex is about passing reference to function
-        // book1 created pointing to object, book1 got passed to a function
-        // c# rule: always pass by value
-        // so in function, a copy of the memory location is created
-        // in this case, it still points to the same object
-        // when we modify in function, the object (through memory location) 
-        // is modified
         [Fact]
         public void CanSetNameFromReference()
         {
             var book1 = GetBook("Book 1");
             SetName(book1, "New Name");
 
-            Assert.Equal("New Name", book1.Name);
+            Assert.Equal("New Name", book1.Name);            
         }
 
-        private void SetName(Book book, string name)
+        private void SetName(InMemoryBook book, string name)
         {
             book.Name = name;
         }
 
-        /////////////////////////////////////////////
-        // 2nd example
-        // book1 point to Book object, book2 point to different Book object
+        [Fact]
+        public void StringsBehaveLikeValueTypes()
+        {
+            string name = "Scott";
+            var upper = MakeUppercase(name);
+
+            Assert.Equal("Scott", name);
+            Assert.Equal("SCOTT", upper);
+        }
+
+        private string MakeUppercase(string parameter)
+        {
+            return parameter.ToUpper();
+        }
+
         [Fact]
         public void GetBookReturnsDifferentObjects()
         {
@@ -110,14 +120,8 @@ namespace GradeBook.Tests
             Assert.Equal("Book 2", book2.Name);
             Assert.NotSame(book1, book2);
         }
-        
 
-       /////////////////////////////////////////////
-       // First example
-       // book1 is a reference type, book1 contains memory location
-       // book2 copy the memory location from book1
-       // basically, book1 and book2 reference (point to) the same object
-       [Fact]
+        [Fact]
         public void TwoVarsCanReferenceSameObject()
         {
             var book1 = GetBook("Book 1");
@@ -127,9 +131,9 @@ namespace GradeBook.Tests
             Assert.True(Object.ReferenceEquals(book1, book2));
         }
 
-        Book GetBook(string name)
+        InMemoryBook GetBook(string name)
         {
-            return new Book(name);
+            return new InMemoryBook(name);
         }
     }
 }

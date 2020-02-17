@@ -1,49 +1,123 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GradeBook
 {
-    public class Book
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
+
+    public class NamedObject 
     {
-        public Book(string name)
+        public NamedObject(string name)
         {
-            grades = new List<double>();
             Name = name;
         }
 
-        public void AddGrade(double grade)
+        public string Name
         {
-            if (grade <= 100 && grade >= 0)
-            {
-                grades.Add(grade);
-            }
-            else
-            {
-                throw new ArgumentException($"Invalid {nameof(grade)}");
+            get;
+            set;
+        }
+    }
+
+    public interface IBook
+    {
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        string Name { get; }
+        event GradeAddedDelegate GradeAdded;
+    }
+
+    public abstract class Book : NamedObject, IBook
+    {
+        public Book(string name) : base(name)
+        {
+        }
+
+        public abstract event GradeAddedDelegate GradeAdded;
+        public abstract void AddGrade(double grade);
+        public abstract Statistics GetStatistics();
+    }
+
+    public class DiskBook : Book
+    {
+        public DiskBook(string name) : base(name)
+        {
+        }
+
+        public override event GradeAddedDelegate GradeAdded;
+
+        public override void AddGrade(double grade)
+        {
+            using(var writer = File.AppendText($"{Name}.txt"))
+            {                
+                writer.WriteLine(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
         }
 
-        public Statistics GetStatistics()
+        public override Statistics GetStatistics()
         {
             var result = new Statistics();
-            result.Average = 0.0;            
-            result.High = double.MinValue;
-            result.Low = double.MaxValue;
 
-            foreach(var grade in grades)
+            using(var reader = File.OpenText($"{Name}.txt"))
             {
-                result.Low = Math.Min(grade, result.Low);
-                result.High = Math.Max(grade, result.High);
-                result.Average += grade;
-            } 
-            result.Average /= grades.Count;
+                var line = reader.ReadLine();
+                while(line != null)
+                {
+                    var number = double.Parse(line);
+                    result.Add(number);
+                    line = reader.ReadLine();
+                }
+            }
 
+            return result;
+        }
+    }
+
+    public class InMemoryBook : Book
+    {
+        public InMemoryBook(string name) : base(name)
+        {            
+            grades = new List<double>();
+            Name = name;
+        }
+         
+        public override void AddGrade(double grade)
+        {            
+            if(grade <= 100 && grade >= 0)
+            {                
+                grades.Add(grade);  
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
+            }
+            else
+            {
+               throw new ArgumentException($"Invalid {nameof(grade)}");
+            }            
+        }
+
+        public override event GradeAddedDelegate GradeAdded;
+
+        public override Statistics GetStatistics()
+        {
+            var result = new Statistics();
+            
+            for(var index = 0; index < grades.Count; index += 1)
+            {
+                result.Add(grades[index]);                            
+            }
+                
             return result;
         }
 
         private List<double> grades;
-        public string Name;
+        
+        public const string CATEGORY = "Science";
     }
 }
-
-
