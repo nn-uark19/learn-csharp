@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnXInYMinute", "LearnXInYMinute\LearnXInYMinute.csproj", "{94AD1F79-242C-421E-B988-A9E57B9FF9C9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "learn-asynchronous", "learn-asynchronous\learn-asynchronous.csproj", "{F7BAA815-B895-4BCC-B29B-2BE1EB249405}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{94AD1F79-242C-421E-B988-A9E57B9FF9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94AD1F79-242C-421E-B988-A9E57B9FF9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94AD1F79-242C-421E-B988-A9E57B9FF9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
