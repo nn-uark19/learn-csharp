@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnXInYMinute", "LearnXIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "learn-asynchronous", "learn-asynchronous\learn-asynchronous.csproj", "{F7BAA815-B895-4BCC-B29B-2BE1EB249405}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFUserInterface", "WPFUserInterface\WPFUserInterface.csproj", "{14FE9A43-1A16-4CC4-9EF5-8F0E22EBB8C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7BAA815-B895-4BCC-B29B-2BE1EB249405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14FE9A43-1A16-4CC4-9EF5-8F0E22EBB8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14FE9A43-1A16-4CC4-9EF5-8F0E22EBB8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14FE9A43-1A16-4CC4-9EF5-8F0E22EBB8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14FE9A43-1A16-4CC4-9EF5-8F0E22EBB8C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
